@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famous People — Guess Who?</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        fun: ['Fredoka', 'sans-serif']
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-fun { font-family: 'Fredoka', cursive, sans-serif; }
+        @keyframes popIn {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop { animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-indigo-50/40 to-cyan-50/40 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <header class="w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-indigo-100 dark:border-slate-800 py-3.5 px-4 md:px-8 flex justify-between items-center z-30 sticky top-0">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="window.switchScreen('welcome')">
+            <div class="bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white p-2.5 rounded-2xl shadow-md flex items-center justify-center">
+                <i class="fa-solid fa-user-secret text-lg"></i>
+            </div>
+            <div>
+                <h1 class="text-lg md:text-xl font-fun font-bold bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-transparent">Famous People</h1>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Guess Who? Educational Game</p>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2.5">
+            <!-- Learning Journal Button -->
+            <button onclick="window.openJournal()" class="px-3 py-2 text-xs font-semibold bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 rounded-xl hover:bg-indigo-100 transition flex items-center space-x-1.5" title="Learning Journal">
+                <i class="fa-solid fa-book-open"></i>
+                <span class="hidden sm:inline" id="nav-journal">Journal</span>
+            </button>
+
+            <!-- Language Toggle -->
+            <button onclick="window.toggleLanguage()" class="px-3 py-2 text-xs font-semibold bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 rounded-xl hover:bg-indigo-100 transition flex items-center space-x-1">
+                <i class="fa-solid fa-globe"></i>
+                <span id="lang-label">EN / ID</span>
+            </button>
+
+            <!-- Theme Toggle -->
+            <button onclick="window.toggleTheme()" class="p-2 text-xs font-semibold bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 rounded-xl hover:bg-indigo-100 transition">
+                <i id="theme-icon" class="fa-solid fa-moon"></i>
+            </button>
+
+            <!-- Settings Button -->
+            <button onclick="window.openSettingsModal()" class="p-2 text-xs font-semibold bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 rounded-xl hover:bg-indigo-100 transition" title="Settings">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 flex flex-col justify-center items-center">
+
+        <!-- 1. WELCOME & REGISTRATION SCREEN -->
+        <div id="screen-welcome" class="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-indigo-100/80 dark:border-slate-800 p-6 md:p-10 flex flex-col items-center text-center space-y-6 transition-all">
+            <div class="w-20 h-20 bg-gradient-to-tr from-indigo-600 to-cyan-400 rounded-3xl shadow-xl flex items-center justify-center text-white text-3xl mb-1 animate-bounce">
+                <i class="fa-solid fa-puzzle-piece"></i>
+            </div>
+            
+            <div class="space-y-2">
+                <h2 class="font-fun text-3xl md:text-4xl font-bold text-slate-900 dark:text-white" id="welcome-title">Famous People — Guess Who?</h2>
+                <p class="text-sm md:text-base text-slate-600 dark:text-slate-300 max-w-lg mx-auto" id="welcome-tagline">Read progressive clues, think smart, and identify historical, scientific, and cultural icons!</p>
+            </div>
+
+            <!-- Student Identity Registration Form -->
+            <div class="w-full bg-slate-50 dark:bg-slate-800/60 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 text-left space-y-3">
+                <h4 class="font-fun font-bold text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center space-x-2">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span id="txt-form-title">Student / Player Identity</span>
+                </h4>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1" id="lbl-name">Full Name *</label>
+                        <input type="text" id="input-name" placeholder="e.g. Budi Santoso" class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1" id="lbl-class">Class / Grade *</label>
+                        <input type="text" id="input-class" placeholder="e.g. VIII-A / Grade 8" class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1" id="lbl-absent">Attendance No. *</label>
+                        <input type="number" id="input-absent" placeholder="e.g. 05" class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1" id="lbl-school">School / Madrasah *</label>
+                        <input type="text" id="input-school" placeholder="e.g. MTsN 1 Malang" class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Mode, Difficulty & Question Format Selectors -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
+                <div class="space-y-1.5 text-left">
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400" id="lbl-difficulty">Difficulty Level</label>
+                    <select id="select-difficulty" class="w-full px-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:outline-none focus:border-indigo-500">
+                        <option value="easy">Easy (Famous Icons)</option>
+                        <option value="medium" selected>Medium (Standard)</option>
+                        <option value="hard">Hard (Advanced)</option>
+                    </select>
+                </div>
+                <div class="space-y-1.5 text-left">
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400" id="lbl-game-mode">Game Mode</label>
+                    <select id="select-mode" class="w-full px-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:outline-none focus:border-indigo-500">
+                        <option value="classic">Classic (Free Text)</option>
+                        <option value="multiple" selected>Multiple Choice</option>
+                        <option value="timed">Timed Challenge (90s)</option>
+                    </select>
+                </div>
+                <div class="space-y-1.5 text-left">
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400" id="lbl-category">Category</label>
+                    <select id="select-category" class="w-full px-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:outline-none focus:border-indigo-500">
+                        <option value="all">All Categories</option>
+                        <option value="Science">Science & Tech</option>
+                        <option value="History">History & Leaders</option>
+                        <option value="Arts">Arts & Literature</option>
+                        <option value="Sports">Sports & Exploration</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 w-full pt-2">
+                <button onclick="window.startGame()" class="flex-1 py-3.5 px-6 bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-fun font-bold text-base rounded-2xl shadow-lg shadow-indigo-500/25 transition transform active:scale-95 flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-play"></i>
+                    <span id="btn-start-game">Start Challenge</span>
+                </button>
+                <button onclick="window.openHowToPlay()" class="py-3.5 px-5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-2xl text-xs transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span id="btn-how-to-play">How to Play</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. GAMEPLAY DASHBOARD SCREEN -->
+        <div id="screen-game" class="w-full max-w-2xl hidden flex-col space-y-5 animate-pop">
+            
+            <!-- Top Status Bar -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-3xl shadow-sm border border-indigo-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-fun font-bold flex items-center justify-center text-base" id="round-number-badge">
+                        Q1
+                    </div>
+                    <div>
+                        <div class="text-[10px] uppercase tracking-wider font-bold text-slate-400" id="txt-status-player">Player</div>
+                        <div id="hud-player-name" class="font-fun font-bold text-sm text-slate-700 dark:text-slate-200">Budi Santoso</div>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div class="text-center">
+                        <div class="text-[10px] uppercase tracking-wider font-bold text-slate-400" id="txt-status-score">Score</div>
+                        <div id="hud-score" class="font-fun font-bold text-base text-indigo-600 dark:text-indigo-400">0</div>
+                    </div>
+                    <div class="text-center hidden" id="timer-wrapper">
+                        <div class="text-[10px] uppercase tracking-wider font-bold text-slate-400" id="txt-status-timer">Time</div>
+                        <div id="hud-timer" class="font-fun font-bold text-base text-cyan-600 dark:text-cyan-400">90s</div>
+                    </div>
+                    <button onclick="window.quitToMenu()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-xl transition" title="Quit to Menu">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Question & Clues Card -->
+            <div class="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-xl border border-indigo-100/80 dark:border-slate-800 flex flex-col items-center text-center relative overflow-hidden space-y-5">
+                <div class="absolute top-3 left-4 text-[11px] font-semibold text-slate-400 uppercase tracking-widest flex items-center space-x-1.5">
+                    <i class="fa-solid fa-mask text-indigo-500"></i>
+                    <span id="txt-game-header">Who Am I?</span>
+                </div>
+
+                <div class="absolute top-3 right-4 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950 px-3 py-1 rounded-full" id="hud-category-badge">
+                    Science
+                </div>
+
+                <!-- Clues Container -->
+                <div id="clues-container" class="w-full space-y-2.5 my-2 text-left">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Action Controls: Reveal Clue / Submit -->
+                <div class="w-full space-y-3 pt-2">
+                    <div id="reveal-btn-wrapper" class="w-full">
+                        <button onclick="window.revealNextClue()" id="btn-reveal" class="w-full py-3 bg-indigo-50 dark:bg-slate-800 hover:bg-indigo-100 text-indigo-600 dark:text-indigo-300 font-semibold rounded-2xl text-xs transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <span id="txt-reveal-clue">Reveal Next Clue</span>
+                            <span id="clue-counter-badge" class="bg-indigo-200 dark:bg-indigo-900 px-2 py-0.5 rounded-full text-[10px]">1 / 4</span>
+                        </button>
+                    </div>
+
+                    <!-- Classic Free Text Input -->
+                    <div id="classic-input-area" class="relative flex items-center w-full">
+                        <input type="text" id="answer-input" autocomplete="off" placeholder="Type the person's full name..." class="w-full pl-4 pr-24 py-3.5 bg-slate-50 dark:bg-slate-800 border-2 border-indigo-100 dark:border-slate-700 rounded-2xl text-sm font-semibold text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition shadow-inner">
+                        <button onclick="window.submitClassicAnswer()" class="absolute right-1.5 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-fun font-bold text-xs rounded-xl shadow-md transition flex items-center space-x-1.5">
+                            <i class="fa-solid fa-check"></i>
+                            <span id="btn-submit">Submit</span>
+                        </button>
+                    </div>
+
+                    <!-- Multiple Choice Options Area -->
+                    <div id="multiple-options-area" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full hidden">
+                        <!-- Populated dynamically -->
+                    </div>
+
+                    <!-- Secondary Controls -->
+                    <div class="flex justify-between items-center text-xs pt-1">
+                        <span class="text-slate-400 font-medium" id="txt-score-weight">Score value decreases with each clue revealed.</span>
+                        <button onclick="window.skipQuestion()" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-xl hover:bg-slate-200 transition font-semibold">
+                            <span id="btn-skip">Skip Question</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Feedback Toast Banner -->
+                <div id="feedback-toast" class="mt-2 w-full p-3 rounded-2xl text-xs font-medium hidden transition-all">
+                    <!-- Dynamic feedback message -->
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- 1. ROUND FEEDBACK & SUMMARY MODAL -->
+    <div id="modal-summary" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl border border-indigo-100 dark:border-slate-800 p-6 text-center space-y-4 animate-pop max-h-[90vh] overflow-y-auto">
+            <div id="summary-icon-box" class="w-16 h-16 bg-gradient-to-tr from-emerald-500 to-cyan-400 rounded-2xl shadow-lg flex items-center justify-center text-white text-2xl mx-auto">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            
+            <div class="space-y-1">
+                <h3 class="font-fun text-2xl font-bold text-slate-900 dark:text-white" id="summary-title">Correct!</h3>
+                <p id="summary-person-name" class="font-fun font-bold text-indigo-600 dark:text-indigo-400 text-lg">Isaac Newton</p>
+            </div>
+
+            <!-- Stats Box -->
+            <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl grid grid-cols-3 gap-2 text-center border border-slate-200 dark:border-slate-700">
+                <div>
+                    <div class="text-[10px] text-slate-400 uppercase font-bold" id="lbl-sum-clues">Clues Used</div>
+                    <div id="sum-clues-val" class="font-fun font-bold text-lg text-indigo-600 dark:text-indigo-400">2 / 4</div>
+                </div>
+                <div>
+                    <div class="text-[10px] text-slate-400 uppercase font-bold" id="lbl-sum-score">Points Earned</div>
+                    <div id="sum-score-val" class="font-fun font-bold text-lg text-cyan-600 dark:text-cyan-400">+40</div>
+                </div>
+                <div>
+                    <div class="text-[10px] text-slate-400 uppercase font-bold" id="lbl-sum-total">Total Score</div>
+                    <div id="sum-total-val" class="font-fun font-bold text-lg text-emerald-600 dark:text-emerald-400">140</div>
+                </div>
+            </div>
+
+            <!-- Biography & Fun Fact -->
+            <div class="text-left space-y-2 bg-indigo-50/50 dark:bg-slate-800/40 p-4 rounded-2xl border border-indigo-100 dark:border-slate-700">
+                <h5 class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide" id="txt-bio-heading">Biographical Bio</h5>
+                <p id="summary-bio-text" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+                <div class="pt-2 border-t border-indigo-100 dark:border-slate-700">
+                    <span class="font-semibold text-[11px] text-amber-600 dark:text-amber-400" id="lbl-fun-fact">Fun Fact:</span>
+                    <span id="summary-fact-text" class="text-xs text-slate-600 dark:text-slate-300"></span>
+                </div>
+            </div>
+
+            <div class="flex gap-2.5 pt-2">
+                <button onclick="window.nextQuestion()" class="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-fun font-bold text-sm rounded-2xl shadow-lg transition hover:opacity-95 flex items-center justify-center space-x-2">
+                    <span id="btn-next-question">Next Question</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <button onclick="window.switchScreen('welcome')" class="py-3 px-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-xs rounded-2xl hover:bg-slate-200 transition">
+                    <span id="btn-home">Home</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. LEARNING JOURNAL MODAL -->
+    <div id="modal-journal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-3xl shadow-2xl border border-indigo-100 dark:border-slate-800 overflow-hidden flex flex-col max-h-[85vh]">
+            <div class="bg-gradient-to-r from-indigo-600 to-cyan-500 p-5 text-white flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-white/20 p-2.5 rounded-2xl">
+                        <i class="fa-solid fa-book-open text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-fun font-bold text-lg" id="journal-heading">Famous Figures Learning Journal</h3>
+                        <p class="text-xs text-indigo-100" id="journal-subheading">Review icons and historical figures you have successfully identified</p>
+                    </div>
+                </div>
+                <button onclick="window.closeJournal()" class="p-2 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-xl transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-3 flex-1" id="journal-entries-container">
+                <!-- Dynamically populated entries -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. CERTIFICATE OF ACHIEVEMENT MODAL -->
+    <div id="modal-certificate" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-3xl rounded-3xl shadow-2xl border border-indigo-100 dark:border-slate-800 overflow-hidden flex flex-col my-8">
+            <div class="bg-gradient-to-r from-indigo-600 to-cyan-500 p-6 text-white flex justify-between items-center">
+                <div>
+                    <h3 class="font-fun font-bold text-2xl" id="cert-heading">Certificate of Achievement</h3>
+                    <p class="text-xs text-indigo-100" id="cert-subheading">Awarded for excellence in history and general knowledge</p>
+                </div>
+                <button onclick="window.closeCertificate()" class="p-2.5 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-2xl transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Certificate Visual Preview -->
+            <div class="p-6 bg-slate-100 dark:bg-slate-950 flex flex-col items-center">
+                <div id="certificate-preview" class="w-full aspect-[1.414/1] bg-white text-slate-800 rounded-2xl shadow-2xl p-8 border-8 border-amber-400 relative flex flex-col justify-between items-center text-center overflow-hidden">
+                    <div class="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#4f46e5_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    
+                    <div class="flex items-center justify-between w-full border-b-2 border-amber-200 pb-3">
+                        <div class="flex items-center space-x-2 text-indigo-600">
+                            <i class="fa-solid fa-user-secret text-2xl"></i>
+                            <span class="font-fun font-bold text-sm tracking-widest uppercase">Famous People Academy</span>
+                        </div>
+                        <div class="text-xs font-semibold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+                            Official Recognition
+                        </div>
+                    </div>
+
+                    <div class="my-auto space-y-3">
+                        <h4 class="font-serif italic text-xs text-slate-500 uppercase tracking-widest" id="txt-cert-to">This certificate is proudly presented to</h4>
+                        <h2 id="cert-winner-name" class="font-fun font-bold text-2xl md:text-3xl text-indigo-700 tracking-wide border-b-2 border-indigo-100 pb-1 inline-block px-6">Budi Santoso</h2>
+                        
+                        <div class="flex items-center justify-center space-x-3 text-xs font-semibold text-slate-600 bg-indigo-50/70 px-4 py-1.5 rounded-xl border border-indigo-100 max-w-lg mx-auto">
+                            <span><strong id="lbl-c-class">Class:</strong> <span id="cert-winner-class">VIII-A</span></span>
+                            <span>•</span>
+                            <span><strong id="lbl-c-absent">Abs:</strong> <span id="cert-winner-absent">05</span></span>
+                            <span>•</span>
+                            <span><strong id="lbl-c-school">School:</strong> <span id="cert-winner-school">MTsN 1 Malang</span></span>
+                        </div>
+
+                        <p class="text-xs md:text-sm text-slate-600 max-w-lg mx-auto leading-relaxed pt-1" id="txt-cert-body">
+                            For successfully identifying world-changing figures, demonstrating exceptional logical reasoning, and mastering global history and science trivia.
+                        </p>
+                    </div>
+
+                    <div class="w-full flex justify-between items-end border-t-2 border-amber-200 pt-4">
+                        <div class="text-left">
+                            <p class="text-[10px] text-slate-400 uppercase font-semibold">Date</p>
+                            <p id="cert-date" class="text-xs font-bold text-slate-700">October 11, 2026</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="font-fun font-bold text-sm text-indigo-600">Ahmad Budi Leksono</div>
+                            <div class="text-[10px] text-slate-500 uppercase tracking-widest">Application Creator</div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-slate-400 uppercase font-semibold">Total Score</p>
+                            <p id="cert-score" class="text-xs font-bold text-indigo-600">250 Points</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+                <button onclick="window.downloadCertificate()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-cyan-500 hover:opacity-95 text-white font-semibold rounded-2xl text-sm shadow-lg transition flex items-center space-x-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span id="btn-download-cert">Download Certificate Image</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. SETTINGS MODAL -->
+    <div id="modal-settings" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl shadow-2xl border border-indigo-100 dark:border-slate-800 p-6 space-y-5 animate-pop">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
+                <h3 class="font-fun font-bold text-lg text-slate-900 dark:text-white" id="settings-heading">Game Settings</h3>
+                <button onclick="window.closeSettingsModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs">
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-600 dark:text-slate-300" id="set-lbl-theme">Dark Theme</span>
+                    <button onclick="window.toggleTheme()" id="settings-theme-btn" class="px-3 py-1.5 bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 rounded-xl font-semibold">Toggle</button>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-600 dark:text-slate-300" id="set-lbl-lang">Language</span>
+                    <button onclick="window.toggleLanguage()" id="settings-lang-btn" class="px-3 py-1.5 bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 rounded-xl font-semibold">ID / EN</button>
+                </div>
+                <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <button onclick="window.resetProgressData()" class="w-full py-2.5 bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 rounded-xl font-semibold hover:bg-rose-100 transition">
+                        <span id="btn-reset-data">Reset Local Progress</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. HOW TO PLAY MODAL -->
+    <div id="modal-howto" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl border border-indigo-100 dark:border-slate-800 p-6 space-y-4 animate-pop">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
+                <h3 class="font-fun font-bold text-lg text-slate-900 dark:text-white" id="howto-heading">How to Play Guess Who</h3>
+                <button onclick="window.closeHowToPlay()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                <p id="howto-p1">1. Read the first clue carefully. Each round features a secret famous personality across science, history, arts, or sports.</p>
+                <p id="howto-p2">2. You can guess immediately for maximum points (50 pts), or click <strong>Reveal Next Clue</strong> for an easier hint (worth fewer points).</p>
+                <p id="howto-p3">3. Answer correctly via typing or multiple choice, review interesting facts, and build your learning journal!</p>
+            </div>
+            <div class="pt-2 flex justify-end">
+                <button onclick="window.closeHowToPlay()" class="px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl text-xs">Got it!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global State variables
+        let currentLang = 'en';
+        let isDarkMode = false;
+        let currentScreen = 'welcome';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let activeQuestions = [];
+        let currentQuestion = null;
+        let cluesRevealedCount = 1;
+        let timerInterval = null;
+        let timeLeft = 90;
+        let player = { name: '', studentClass: '', absentNo: '', school: '' };
+        let learningJournal = [];
+
+        // Comprehensive Question Bank (60 Verified Figures across Easy, Medium, Hard)
+        const questionsData = [
+            // EASY (20)
+            {
+                id: 'sci-001', name: 'Isaac Newton', category: 'Science', difficulty: 'easy',
+                acceptedAnswers: ['Isaac Newton', 'Newton'],
+                clues: [
+                    'I was an English mathematician, physicist, and astronomer.',
+                    'I formulated the three fundamental laws of motion.',
+                    'An apple falling from a tree famously inspired my work on universal gravitation.',
+                    'I wrote the seminal book Philosophiæ Naturalis Principia Mathematica.'
+                ],
+                bio: 'Sir Isaac Newton was an English mathematician, physicist, and astronomer widely recognized as one of the most influential scientists of all time.',
+                funFact: 'Newton invented calculus independently and also built the first practical reflecting telescope.'
+            },
+            {
+                id: 'sci-002', name: 'Albert Einstein', category: 'Science', difficulty: 'easy',
+                acceptedAnswers: ['Albert Einstein', 'Einstein'],
+                clues: [
+                    'I was a German-born theoretical physicist recognized for developing the theory of relativity.',
+                    'My mass-energy equivalence formula is E = mc².',
+                    'I was awarded the 1921 Nobel Prize in Physics for my explanation of the photoelectric effect.',
+                    'I became a cultural icon known for my wild hair and gentle wisdom.'
+                ],
+                bio: 'Albert Einstein revolutionized physics by changing our understanding of space, time, gravity, and energy.',
+                funFact: 'Einstein did not wear socks and famously played the violin whenever he was stuck on a complex mathematical problem.'
+            },
+            {
+                id: 'his-001', name: 'Abraham Lincoln', category: 'History', difficulty: 'easy',
+                acceptedAnswers: ['Abraham Lincoln', 'Lincoln'],
+                clues: [
+                    'I served as the 16th President of the United States during the American Civil War.',
+                    'I issued the Emancipation Proclamation in 1863 to free enslaved people in rebellious states.',
+                    'I delivered the famous Gettysburg Address, honoring the ideals of democracy.',
+                    'I am famously nicknamed "Honest Abe" and featured on the U.S. five-dollar bill.'
+                ],
+                bio: 'Abraham Lincoln preserved the United States during its greatest moral, constitutional, and political crisis.',
+                funFact: 'Lincoln was a licensed bartender and is enshrined in the National Wrestling Hall of Fame.'
+            },
+            {
+                id: 'art-001', name: 'Leonardo da Vinci', category: 'Arts', difficulty: 'easy',
+                acceptedAnswers: ['Leonardo da Vinci', 'Leonardo', 'Da Vinci'],
+                clues: [
+                    'I was a quintessential Renaissance man from Italy active as a painter, draftsman, engineer, and scientist.',
+                    'I painted the Mona Lisa, one of the most famous portraits in human history.',
+                    'I also created the monumental mural The Last Supper.',
+                    'My notebooks contain visionary sketches of flying machines and armored vehicles centuries ahead of my time.'
+                ],
+                bio: 'Leonardo da Vinci epitomized the Renaissance humanist ideal, possessing an insatiable curiosity and brilliant intellect.',
+                funFact: 'Leonardo could write with one hand and draw with the other simultaneously (mirror writing).'
+            },
+            {
+                id: 'spo-001', name: 'Pelé', category: 'Sports', difficulty: 'easy',
+                acceptedAnswers: ['Pele', 'Pelé'],
+                clues: [
+                    'I was a professional Brazilian footballer regarded as one of the greatest players of all time.',
+                    'I won three FIFA World Cups with Brazil (1958, 1962, and 1970).',
+                    'I scored over 1,283 goals in my illustrious career, earning the title "The King" (O Rei).',
+                    'I transcended sport to become a global ambassador for peace and humanitarianism.'
+                ],
+                bio: 'Edson Arantes do Nascimento, known as Pelé, became a global sports legend who transformed soccer worldwide.',
+                funFact: 'A 48-hour civil war in Nigeria was halted in 1969 so both sides could watch Pelé play an exhibition match in Lagos.'
+            },
+            {
+                id: 'sci-003', name: 'Marie Curie', category: 'Science', difficulty: 'easy',
+                acceptedAnswers: ['Marie Curie', 'Curie', 'Madam Curie'],
+                clues: [
+                    'I was a physicist and chemist who conducted pioneering research on radioactivity.',
+                    'I was the first woman to win a Nobel Prize and remain the only person to win Nobel Prizes in two different scientific fields (Physics and Chemistry).',
+                    'I discovered the radioactive elements polonium and radium.',
+                    'I coined the term "radioactivity" and developed mobile radiography units during World War I.'
+                ],
+                bio: 'Marie Curie broke countless gender barriers in science and laid the groundwork for modern nuclear physics and oncology.',
+                funFact: 'Curie’s personal notebooks from the 1890s are still radioactive today and kept in lead-lined boxes.'
+            },
+            {
+                id: 'his-002', name: 'Mahatma Gandhi', category: 'History', difficulty: 'easy',
+                acceptedAnswers: ['Mahatma Gandhi', 'Gandhi'],
+                clues: [
+                    'I was an Indian lawyer and anti-colonial nationalist who employed nonviolent resistance.',
+                    'I led India to independence from British rule through campaigns like the Salt March.',
+                    'My philosophy of nonviolence (Ahimsa and Satyagraha) inspired civil rights leaders worldwide.',
+                    'I am honored as the Father of the Nation in India.'
+                ],
+                bio: 'Mohandas Karamchand Gandhi led India to freedom through moral force and peaceful civil disobedience.',
+                funFact: 'Gandhi was nominated for the Nobel Peace Prize five times but never actually won it.'
+            },
+            {
+                id: 'art-002', name: 'William Shakespeare', category: 'Arts', difficulty: 'easy',
+                acceptedAnswers: ['William Shakespeare', 'Shakespeare'],
+                clues: [
+                    'I was an English playwright, poet, and actor widely regarded as the greatest writer in the English language.',
+                    'My masterpieces include Romeo and Juliet, Hamlet, Macbeth, and Othello.',
+                    'I wrote 39 plays and 154 sonnets during the Elizabethan and Jacobean eras.',
+                    'I was associated with the famous Globe Theatre in London.'
+                ],
+                bio: 'Shakespeare’s plays have been translated into every major living language and are performed more often than those of any other playwright.',
+                funFact: 'Shakespeare invented over 1,700 common English words by combining words, changing verbs to nouns, and adding prefixes.'
+            },
+            {
+                id: 'sci-004', name: 'Thomas Edison', category: 'Science', difficulty: 'easy',
+                acceptedAnswers: ['Thomas Edison', 'Edison'],
+                clues: [
+                    'I was an American inventor and businessman who developed many devices that greatly influenced life around the world.',
+                    'I perfected the practical incandescent electric light bulb.',
+                    'I invented the phonograph, which allowed recorded sound to be played back.',
+                    'My research laboratory in Menlo Park produced over 1,000 patented inventions.'
+                ],
+                bio: 'Thomas Alva Edison revolutionized modern industrial civilization with electrical power generation and mass communication.',
+                funFact: 'Edison famously believed sleep was a waste of time and famously took frequent brief catnaps under his desk.'
+            },
+            {
+                id: 'his-003', name: 'Cleopatra', category: 'History', difficulty: 'easy',
+                acceptedAnswers: ['Cleopatra', 'Cleopatra VII'],
+                clues: [
+                    'I was the last active ruler of the Ptolemaic Kingdom of Egypt.',
+                    'I was renowned for my intellect, political brilliance, and romantic alliances with Julius Caesar and Mark Antony.',
+                    'I spoke multiple languages fluently and was the only ruler in my dynasty to learn the Egyptian language.',
+                    'My reign marked the end of the Hellenistic period in Egypt.'
+                ],
+                bio: 'Cleopatra VII Philopator was a legendary queen of Egypt whose political acumen captivated the ancient Mediterranean.',
+                funFact: 'Cleopatra lived closer in time to the launch of the iPhone than to the construction of the Great Pyramid of Giza.'
+            },
+            {
+                id: 'art-003', name: 'Ludwig van Beethoven', category: 'Arts', difficulty: 'easy',
+                acceptedAnswers: ['Ludwig van Beethoven', 'Beethoven'],
+                clues: [
+                    'I was a German composer and pianist who remains one of the most admired figures in Western music history.',
+                    'My famous works include Symphony No. 5, Symphony No. 9 (Ode to Joy), and Moonlight Sonata.',
+                    'I continued to compose masterpiece symphonies and concertos even after losing my hearing.',
+                    'I bridged the transition between the Classical and Romantic eras in classical music.'
+                ],
+                bio: 'Beethoven expanded the scope of classical music and expressed profound human emotion through symphonic composition.',
+                funFact: 'Beethoven was famously meticulous about coffee, insisting that every cup be brewed using precisely 60 coffee beans.'
+            },
+            {
+                id: 'spo-002', name: 'Michael Jordan', category: 'Sports', difficulty: 'easy',
+                acceptedAnswers: ['Michael Jordan', 'Jordan'],
+                clues: [
+                    'I was an American professional basketball player who became a global cultural icon.',
+                    'I won six NBA championships with the Chicago Bulls during the 1990s.',
+                    'I earned five regular-season MVP awards and inspired the famous Air Jordan sneaker brand.',
+                    'I played wearing the iconic number 23 jersey and was known for my incredible aerial acrobatics.'
+                ],
+                bio: 'Michael Jordan popularized basketball worldwide and set the gold standard for athletic competitiveness and excellence.',
+                funFact: 'Jordan was famously cut from his high school varsity basketball team as a sophomore before working relentlessly to improve.'
+            },
+            {
+                id: 'sci-005', name: 'Alexander Graham Bell', category: 'Science', difficulty: 'easy',
+                acceptedAnswers: ['Alexander Graham Bell', 'Bell'],
+                clues: [
+                    'I was a Scottish-born inventor, scientist, and engineer credited with patenting the first practical telephone.',
+                    'My mother and wife were both deaf, which profoundly inspired my lifelong work in acoustics and speech.',
+                    'I co-founded the American Telephone and Telegraph Company (AT&T) in 1885.',
+                    'My first transmitted words on the invention were: "Mr. Watson, come here, I want to see you."'
+                ],
+                bio: 'Alexander Graham Bell transformed global human communication by inventing electrical voice transmission.',
+                funFact: 'Bell refused to have a telephone in his own study because he considered it a distraction from scientific research.'
+            },
+            {
+                id: 'his-004', name: 'Winston Churchill', category: 'History', difficulty: 'easy',
+                acceptedAnswers: ['Winston Churchill', 'Churchill'],
+                clues: [
+                    'I served as Prime Minister of the United Kingdom twice, notably during the Second World War.',
+                    'My defiant wartime speeches and radio broadcasts rallied the British people against Nazi aggression.',
+                    'I coined the term "Iron Curtain" to describe the division of Europe during the Cold War.',
+                    'I was also an accomplished artist, historian, and Nobel Prize laureate in Literature.'
+                ],
+                bio: 'Winston Churchill was a steadfast wartime leader who defended democracy during its darkest hour.',
+                funFact: 'Churchill was known for wearing a famous "siren suit" (a one-piece romper) during bombing raids in London.'
+            },
+            {
+                id: 'art-004', name: 'Vincent van Gogh', category: 'Arts', difficulty: 'easy',
+                acceptedAnswers: ['Vincent van Gogh', 'Van Gogh'],
+                clues: [
+                    'I was a Dutch Post-Impressionist painter whose art created a profound impact on 20th-century art.',
+                    'My vibrant masterpieces include The Starry Night, Sunflowers, and Irises.',
+                    'I suffered from severe mental health struggles during my lifetime and painted feverishly in Arles.',
+                    'I famously cut off part of my left ear during a breakdown in 1888.'
+                ],
+                bio: 'Van Gogh’s expressive brushwork and bold use of color became foundational pillars of modern expressionism.',
+                funFact: 'During his entire lifetime, van Gogh sold only one single painting (The Red Vineyard).'
+            },
+            {
+                id: 'sci-006', name: 'Charles Darwin', category: 'Science', difficulty: 'easy',
+                acceptedAnswers: ['Charles Darwin', 'Darwin'],
+                clues: [
+                    'I was an English naturalist, geologist, and biologist best known for my contributions to evolutionary science.',
+                    'I sailed around the world on the HMS Beagle, making crucial observations in the Galápagos Islands.',
+                    'I proposed the theory of evolution by natural selection in my 1859 book On the Origin of Species.',
+                    'My portrait was famously featured on the British ten-pound banknote.'
+                ],
+                bio: 'Charles Darwin changed humanity’s view of the natural world and our place within the tree of life.',
+                funFact: 'Before deciding on biology, Darwin studied medicine at Edinburgh University, but he fainted during surgical operations.'
+            },
+            {
+                id: 'his-005', name: 'Joan of Arc', category: 'History', difficulty: 'easy',
+                acceptedAnswers: ['Joan of Arc', 'Jeanne d Arc', 'Joan'],
+                clues: [
+                    'I was a teenage peasant girl who heroine-led the French army during the Hundred Years\' War.',
+                    'I claimed to receive visions from archangels instructing me to support Charles VII and expel the English.',
+                    'I was captured by Burgundians, put on trial, and burned at the stake at age 19.',
+                    'I was canonized as a saint by the Roman Catholic Church in 1920.'
+                ],
+                bio: 'Joan of Arc became an enduring symbol of French national unity and divine courage.',
+                funFact: 'Joan dressed in male military armor because it provided practical protection and discouraged unwanted advances in camp.'
+            },
+            {
+                id: 'art-005', name: 'Wolfgang Amadeus Mozart', category: 'Arts', difficulty: 'easy',
+                acceptedAnswers: ['Wolfgang Amadeus Mozart', 'Mozart'],
+                clues: [
+                    'I was a prolific and influential composer of the Classical era from Salzburg, Austria.',
+                    'I composed over 600 works, including symphonies, concertos, chamber music, and operas like The Magic Flute.',
+                    'I was a legendary child prodigy who performed brilliantly before European royalty at age five.',
+                    'My masterpieces continue to be celebrated for their melodic beauty and technical perfection.'
+                ],
+                bio: 'Mozart’s genius spanned every genre of classical composition, creating timeless musical perfection.',
+                funFact: 'Mozart had an exceptional musical ear; he could accurately identify and reproduce any musical note or chord heard instantly.'
+            },
+            {
+                id: 'spo-003', name: 'Muhammad Ali', category: 'Sports', difficulty: 'easy',
+                acceptedAnswers: ['Muhammad Ali', 'Cassius Clay', 'Ali'],
+                clues: [
+                    'I was an American professional boxer, activist, and cultural icon nicknamed "The Greatest".',
+                    'I won the world heavyweight championship three times and clinched an Olympic gold medal in 1960.',
+                    'I was famous for my lightning-fast footwork ("float like a butterfly, sting like a bee") and witty poetry.',
+                    'I actively refused military induction during the Vietnam War on religious grounds, risking my career.'
+                ],
+                bio: 'Muhammad Ali redefined sports stardom through athletic dominance, social activism, and charismatic eloquence.',
+                funFact: 'Ali has his own star on the Hollywood Walk of Fame—the only star mounted on a wall rather than the pavement, at his request.'
+            },
+            {
+                id: 'sci-007', name: 'Wright Brothers', category: 'Science', difficulty: 'easy',
+                acceptedAnswers: ['Wright Brothers', 'Orville Wright', 'Wilbur Wright'],
+                clues: [
+                    'We were two American aviation pioneers credited with inventing, building, and flying the world\'s first successful motor-operated airplane.',
+                    'We achieved our historic first powered controlled flight near Kitty Hawk, North Carolina, in 1903.',
+                    'We operated a bicycle repair shop in Dayton, Ohio, which funded our aerodynamic wind tunnel experiments.',
+                    'Our names are Orville and Wilbur.'
+                ],
+                bio: 'The Wright brothers inaugurated the aerial age of human transportation through rigorous scientific engineering.',
+                funFact: 'Orville and Wilbur made a pact that they would never fly in the same airplane together to ensure the family business survived.'
+            },
+
+            // MEDIUM (20)
+            {
+                id: 'sci-008', name: 'Nikola Tesla', category: 'Science', difficulty: 'medium',
+                acceptedAnswers: ['Nikola Tesla', 'Tesla'],
+                clues: [
+                    'I was a Serbian-American inventor, electrical engineer, and futurist.',
+                    'I developed the modern alternating current (AC) electricity supply system.',
+                    'I invented the Tesla coil and pioneered radio communication.',
+                    'I held over 300 patents and maintained a legendary rivalry with Thomas Edison.'
+                ],
+                bio: 'Nikola Tesla was a visionary genius whose electrical innovations powered the modern technological world.',
+                funFact: 'Tesla spoke eight languages fluently and could memorize entire books word-for-word (eidetic memory).'
+            },
+            {
+                id: 'his-006', name: 'Nelson Mandela', category: 'History', difficulty: 'medium',
+                acceptedAnswers: ['Nelson Mandela', 'Mandela'],
+                clues: [
+                    'I was a South African anti-apartheid revolutionary, political leader, and philanthropist.',
+                    'I spent 27 years in prison, mostly on Robben Island, for opposing apartheid.',
+                    'I became South Africa\'s first Black head of state and the first elected in a fully representative democratic election.',
+                    'I was awarded the Nobel Peace Prize in 1993 for peaceful reconciliation.'
+                ],
+                bio: 'Nelson Mandela symbolized global forgiveness, resilience, and the triumph of human rights over tyranny.',
+                funFact: 'While in prison, Mandela secretly studied law and organized an underground university for fellow inmates.'
+            },
+            {
+                id: 'art-006', name: 'Frida Kahlo', category: 'Arts', difficulty: 'medium',
+                acceptedAnswers: ['Frida Kahlo', 'Kahlo'],
+                clues: [
+                    'I was a Mexican painter known for my many portraits, self-portraits, and works inspired by nature and artifacts of Mexico.',
+                    'My art explored identity, the human body, and death, deeply influenced by my chronic pain from a bus accident.',
+                    'I was married to fellow Mexican muralist Diego Rivera.',
+                    'I became a feminist icon and celebrated figure in surrealist art.'
+                ],
+                bio: 'Frida Kahlo channeled personal suffering into striking, deeply symbolic, and emotionally raw masterpieces.',
+                funFact: 'Kahlo had a pet spider monkey, parrots, hairless Mexican dogs, and an eagle that roamed her garden.'
+            },
+            {
+                id: 'his-007', name: 'Joan of Arc', category: 'History', difficulty: 'medium',
+                acceptedAnswers: ['Joan of Arc', 'Jeanne d Arc'],
+                clues: [
+                    'I was a legendary medieval visionary who rallied French forces at Orléans.',
+                    'I claimed divine guidance from Saint Michael and Saint Catherine.',
+                    'My military campaigns turned the tide of the Hundred Years\' War.',
+                    'I was betrayed, tried by an ecclesiastical court, and posthumously exonerated.'
+                ],
+                bio: 'Joan of Arc remains one of history’s most inspiring military leaders and religious icons.',
+                funFact: 'Her trial transcripts were meticulously recorded, providing historians with rare firsthand accounts of her sharp wit.'
+            },
+            {
+                id: 'sci-009', name: 'Stephen Hawking', category: 'Science', difficulty: 'medium',
+                acceptedAnswers: ['Stephen Hawking', 'Hawking'],
+                clues: [
+                    'I was an English theoretical physicist, cosmologist, and author.',
+                    'I worked on gravitational singularity theorems and theoretical prediction that black holes emit radiation (Hawking radiation).',
+                    'I authored the bestselling science book A Brief History of Time.',
+                    'I lived for decades with motor neurone disease (ALS), communicating via a speech-generating device.'
+                ],
+                bio: 'Stephen Hawking unlocked the deepest secrets of black holes and cosmology while inspiring millions with his determination.',
+                funFact: 'Hawking once hosted a party for time travelers, sending out the invitations *after* the party had already ended to prove they wouldn’t show up.'
+            },
+            {
+                id: 'his-008', name: 'Amelia Earhart', category: 'History', difficulty: 'medium',
+                acceptedAnswers: ['Amelia Earhart', 'Earhart'],
+                clues: [
+                    'I was an American aviation pioneer and author.',
+                    'I was the first female aviator to fly solo across the Atlantic Ocean.',
+                    'I set many other aviation records and advocated for the Equal Rights Amendment.',
+                    'I mysteriously disappeared over the central Pacific Ocean in 1937 while attempting to circumnavigate the globe.'
+                ],
+                bio: 'Amelia Earhart challenged gender barriers and inspired generations of women to pursue careers in aviation and science.',
+                funFact: 'Earhart worked as a social worker in Boston at Denison House before achieving fame in aviation.'
+            },
+            {
+                id: 'art-007', name: 'Pablo Picasso', category: 'Arts', difficulty: 'medium',
+                acceptedAnswers: ['Pablo Picasso', 'Picasso'],
+                clues: [
+                    'I was a Spanish painter, sculptor, printmaker, and ceramicist who spent most of my adult life in France.',
+                    'I co-founded the Cubist movement, invented constructed sculpture, and co-invented collage.',
+                    'My famous works include Guernica, Les Demoiselles d\'Avignon, and The Weeping Woman.',
+                    'My career spanned over 80 years across distinct artistic periods like the Blue and Rose periods.'
+                ],
+                bio: 'Pablo Picasso dominated 20th-century art through restless experimentation and radical stylistic innovation.',
+                funFact: 'Picasso\'s full birth certificate contains 23 different names honoring various saints and relatives.'
+            },
+            {
+                id: 'sci-010', name: 'Ada Lovelace', category: 'Science', difficulty: 'medium',
+                acceptedAnswers: ['Ada Lovelace', 'Lovelace', 'Ada Byron'],
+                clues: [
+                    'I was an English mathematician and writer chiefly known for my work on Charles Babbage\'s mechanical computer, the Analytical Engine.',
+                    'I wrote what is recognized today as the first algorithm intended to be carried out by a machine.',
+                    'I am regarded by historians as the world\'s first computer programmer.',
+                    'I was the legitimate daughter of the famous poet Lord Byron.'
+                ],
+                bio: 'Ada Lovelace foresaw the immense potential of computers far beyond mere mathematical calculation.',
+                funFact: 'Lovelace and her husband famously used mathematical probability systems to gamble on horse races, though it resulted in debts.'
+            },
+            {
+                id: 'his-009', name: 'Rosa Parks', category: 'History', difficulty: 'medium',
+                acceptedAnswers: ['Rosa Parks', 'Parks'],
+                clues: [
+                    'I was an American activist in the civil rights movement best known for my pivotal role in the Montgomery bus boycott.',
+                    'I refused to surrender my bus seat to a white passenger in Montgomery, Alabama, in 1955.',
+                    'The U.S. Congress has honored me as "the first lady of civil rights" and "the mother of the freedom movement".',
+                    'My act of quiet courage galvanized grassroots civil rights resistance nationwide.'
+                ],
+                bio: 'Rosa Parks sparked a massive movement that dismantled institutionalized segregation in public transit.',
+                funFact: 'Parks worked as a seamstress and was also a trained secretary for the NAACP branch in Montgomery.'
+            },
+            {
+                id: 'art-008', name: 'Jane Austen', category: 'Arts', difficulty: 'medium',
+                acceptedAnswers: ['Jane Austen', 'Austen'],
+                clues: [
+                    'I was an English novelist known primarily for my six major novels interpreting and critiquing the British landed gentry.',
+                    'My masterpieces include Pride and Prejudice, Sense and Sensibility, and Emma.',
+                    'My works are celebrated for their wit, social commentary, and psychological insight into marriage and class.',
+                    'I originally published my novels anonymously ("By a Lady").'
+                ],
+                bio: 'Jane Austen remains one of the most widely read and beloved authors in English literature.',
+                funFact: 'Austen wrote her novels on tiny sheets of paper tucked away in her family sitting room, hiding her manuscripts under blotting paper if visitors arrived.'
+            },
+            {
+                id: 'spo-004', name: 'Usain Bolt', category: 'Sports', difficulty: 'medium',
+                acceptedAnswers: ['Usain Bolt', 'Bolt'],
+                clues: [
+                    'I am a retired Jamaican sprinter widely considered the greatest sprinter of all time.',
+                    'I hold the world records in the 100 metres, 200 metres, and 4x100 metres relay.',
+                    'I won eight Olympic gold medals and am the only sprinter to win Olympic 100m and 200m titles at three consecutive Games.',
+                    'I am nicknamed "Lightning Bolt" and famously celebrated with my signature lightning pose.'
+                ],
+                bio: 'Usain Bolt redefined athletic speed and captivated global audiences with his charismatic showmanship.',
+                funFact: 'As a child in Jamaica, Bolt was actually an avid cricket fast bowler before coaches steered him toward track and field.'
+            },
+            {
+                id: 'sci-011', name: 'Galileo Galilei', category: 'Science', difficulty: 'medium',
+                acceptedAnswers: ['Galileo Galilei', 'Galileo'],
+                clues: [
+                    'I was an Italian astronomer, physicist, and engineer referred to as a father of observational astronomy.',
+                    'I improved the refracting telescope and discovered the four largest moons of Jupiter (Galilean moons).',
+                    'I championed heliocentrism, supporting Nicolaus Copernicus against church dogma.',
+                    'I conducted legendary experiments on falling bodies from the Leaning Tower of Pisa.'
+                ],
+                bio: 'Galileo laid the empirical foundations of modern physics and telescopic astronomy.',
+                funFact: 'Galileo’s middle finger is preserved and displayed in a glass jar at the Museo Galileo in Florence.'
+            },
+            {
+                id: 'his-010', name: 'Harriet Tubman', category: 'History', difficulty: 'medium',
+                acceptedAnswers: ['Harriet Tubman', 'Tubman'],
+                clues: [
+                    'I was an American abolitionist and political activist who escaped slavery in Maryland.',
+                    'I made some 13 missions to rescue approximately 70 enslaved people using the network of antislavery activists known as the Underground Railroad.',
+                    'During the American Civil War, I served as an armed scout and spy for the Union Army.',
+                    'I was the first woman to lead an armed military assault during the Civil War (Combahee River Raid).'
+                ],
+                bio: 'Harriet Tubman risked her life countless times to liberate enslaved people, earning the nickname "Moses".',
+                funFact: 'Tubman suffered a severe traumatic brain injury as an enslaved teenager when a heavy overseer\'s weight struck her head, causing lifelong visionary dreams.'
+            },
+            {
+                id: 'art-009', name: 'Mark Twain', category: 'Arts', difficulty: 'medium',
+                acceptedAnswers: ['Mark Twain', 'Samuel Clemens', 'Twain'],
+                clues: [
+                    'I was an American writer, humorist, entrepreneur, publisher, and lecturer.',
+                    'My famous novels include The Adventures of Tom Sawyer and Adventures of Huckleberry Finn.',
+                    'William Dean Howells famously labeled me "the Lincoln of our literature".',
+                    'My real birth name was Samuel Langhorne Clemens.'
+                ],
+                bio: 'Mark Twain captured the spirit of the American frontier and critiqued social hypocrisy with unmatched wit.',
+                funFact: 'Twain was born on the exact day Halley’s Comet passed Earth in 1835, and he famously predicted he would go out with it in 1910.'
+            },
+            {
+                id: 'sci-012', name: 'Dmitri Mendeleev', category: 'Science', difficulty: 'medium',
+                acceptedAnswers: ['Dmitri Mendeleev', 'Mendeleev'],
+                clues: [
+                    'I was a Russian chemist and inventor best known for formulating the Periodic Law.',
+                    'I created the first comprehensive version of the periodic table of elements.',
+                    'I successfully left gaps in my table for elements that had not yet been discovered and predicted their properties accurately.',
+                    'My surname is synonymous with chemical organization.'
+                ],
+                bio: 'Dmitri Mendeleev structured the chemical elements into a unified system that predicted undiscovered matter.',
+                funFact: 'Mendeleev famously claimed the idea for the periodic table structure came to him in a vivid dream while asleep.'
+            },
+            {
+                id: 'his-011', name: 'Simón Bolívar', category: 'History', difficulty: 'medium',
+                acceptedAnswers: ['Simon Bolivar', 'Simón Bolívar', 'Bolivar'],
+                clues: [
+                    'I was a Venezuelan military and political leader who played a leading role in the establishment of Venezuela, Bolivia, Colombia, Ecuador, Peru, and Panama.',
+                    'I am known across Latin America as "El Libertador" (The Liberator).',
+                    'I led campaigns that liberated northern South America from the Spanish Empire.',
+                    'The country of Bolivia is named directly in my honor.'
+                ],
+                bio: 'Simón Bolívar was a visionary statesman who shaped the geopolitical landscape of South America.',
+                funFact: 'Despite coming from a wealthy aristocratic family, Bolívar spent his entire immense personal fortune financing revolutionary armies.'
+            },
+            {
+                id: 'art-010', name: 'Claude Monet', category: 'Arts', difficulty: 'medium',
+                acceptedAnswers: ['Claude Monet', 'Monet'],
+                clues: [
+                    'I was a French painter and founder of French Impressionist painting.',
+                    'The term "Impressionism" is derived from the title of my painting Impression, Sunrise.',
+                    'I painted extensive series capturing light and atmosphere, including Water Lilies and Haystacks at Giverny.',
+                    'I built an exquisite Japanese water garden at my home in Giverny which inspired my final decades of art.'
+                ],
+                bio: 'Claude Monet revolutionized painting by capturing the fleeting effects of natural light and atmosphere directly outdoors.',
+                funFactor: 'In his later years, Monet developed cataracts, which altered how he perceived colors, causing his paintings to take on reddish and yellowish hues.'
+            },
+            {
+                id: 'spo-005', name: 'Serena Williams', category: 'Sports', difficulty: 'medium',
+                acceptedAnswers: ['Serena Williams', 'Williams'],
+                clues: [
+                    'I am an American professional tennis player widely regarded as one of the greatest tennis players in history.',
+                    'I won 23 Grand Slam singles titles, the most by any player in the Open Era.',
+                    'Together with my sister Venus, I dominated women\'s tennis for over two decades.',
+                    'I am celebrated for my powerful baseline game, mental toughness, and fashion advocacy.'
+                ],
+                bio: 'Serena Williams transformed tennis through unmatched athleticism, power, and cultural influence.',
+                funFact: 'Serena won the 2017 Australian Open women\'s singles title while being eight weeks pregnant with her daughter Olympia.'
+            },
+            {
+                id: 'sci-013', name: 'Rachel Carson', category: 'Science', difficulty: 'medium',
+                acceptedAnswers: ['Rachel Carson', 'Carson'],
+                clues: [
+                    'I was an American marine biologist, author, and conservationist.',
+                    'My 1962 book Silent Spring advanced global environmental awareness about the indiscriminate hazards of synthetic pesticides like DDT.',
+                    'My writing catalyzed the modern environmental movement and led to the creation of the U.S. Environmental Protection Agency.',
+                    'I began my career writing poetic prose about ocean life.'
+                ],
+                bio: 'Rachel Carson awakened humanity to the interconnected fragility of ecosystems and wildlife.',
+                funFact: 'Carson worked for the U.S. Bureau of Fisheries writing educational radio scripts during the Great Depression.'
+            },
+            {
+                id: 'his-012', name: 'Sacagawea', category: 'History', difficulty: 'medium',
+                acceptedAnswers: ['Sacagawea', 'Sacajawea'],
+                clues: [
+                    'I was a Lemhi Shoshone woman who helped the Lewis and Clark Expedition achieve their historic objectives.',
+                    'I traveled thousands of miles from the Dakotas to the Pacific Ocean with the expedition while carrying my infant son, Jean Baptiste.',
+                    'My presence as a nursing mother signaled peaceful intentions to Native American tribes along the route.',
+                    'My profile was featured on the U.S. dollar coin starting in 2000.'
+                ],
+                bio: 'Sacagawea played an invaluable role as guide, interpreter, and diplomat during the exploration of the American West.',
+                funFact: 'Sacagawea\'s name translates roughly to "Bird Woman" in the Hidatsa language.'
+            },
+
+            // HARD (20)
+            {
+                id: 'sci-014', name: 'Rosalind Franklin', category: 'Science', difficulty: 'hard',
+                acceptedAnswers: ['Rosalind Franklin', 'Franklin'],
+                clues: [
+                    'I was an English chemist and X-ray crystallographer whose work was central to understanding the molecular structures of DNA, RNA, viruses, coal, and graphite.',
+                    'My X-ray diffraction image of DNA ("Photo 51") provided crucial data for identifying the double helix structure.',
+                    'My contributions were overlooked during the awarding of the Nobel Prize to Watson and Crick.',
+                    'I also pioneered structural virology before my untimely passing.'
+                ],
+                bio: 'Rosalind Franklin captured breathtaking X-ray crystallographic data that unlocked the code of life.',
+                funFact: 'Franklin was an avid hiker and mountaineer, scaling treacherous alpine peaks in her spare time.'
+            },
+            {
+                id: 'his-013', name: 'Suleiman the Magnificent', category: 'History', difficulty: 'hard',
+                acceptedAnswers: ['Suleiman the Magnificent', 'Suleiman I', 'Suleiman'],
+                clues: [
+                    'I was the tenth and longest-reigning Sultan of the Ottoman Empire from 1520 until my death in 1566.',
+                    'Under my rule, the Ottoman state reached its political, military, and economic zenith.',
+                    'In the West I was known as "the Magnificent", while in my empire I was called "Kanuni" (the Lawgiver).',
+                    'I reformed the legal system governing the empire and patronized architectural masterpieces by Mimar Sinan.'
+                ],
+                bio: 'Suleiman presided over the golden age of the Ottoman Empire, bridging Europe and the Middle East.',
+                funFact: 'Suleiman was an accomplished poet who wrote verse under the pen name Muhibbi, producing a Divan collection of poetry.'
+            },
+            {
+                id: 'art-011', name: 'Homer', category: 'Arts', difficulty: 'hard',
+                acceptedAnswers: ['Homer'],
+                clues: [
+                    'I am the legendary ancient Greek author credited as the foundational epic poet of Greek literature.',
+                    'I composed the foundational epic poems the Iliad and the Odyssey.',
+                    'The historicity of my existence has been debated by scholars for centuries in what is known as the "Homeric Question".',
+                    'Tradition depicts me as a blind bard hailing from the Ionian coast of Asia Minor.'
+                ],
+                bio: 'Homer’s epic poems established the archetypal narrative roots of Western storytelling, heroism, and tragedy.',
+                funFact: 'Ancient Greek schools routinely required students to memorize large portions of the Iliad and Odyssey word-for-word.'
+            },
+            {
+                id: 'sci-015', name: 'Hypatia of Alexandria', category: 'Science', difficulty: 'hard',
+                acceptedAnswers: ['Hypatia', 'Hypatia of Alexandria'],
+                clues: [
+                    'I was a Hellenistic mathematician, astronomer, and Neoplatonist philosopher in Roman Egypt.',
+                    'I was the head of the Neoplatonic school in Alexandria and taught elite students from across the Mediterranean.',
+                    'I wrote commentaries on Diophantus\'s Arithmetica and Apollonius\'s Conics.',
+                    'My tragic murder by a mob in 415 AD marked a symbolic transition of classical antiquity.'
+                ],
+                bio: 'Hypatia was a brilliant scholar who kept the torch of Greek mathematics and philosophy burning in antiquity.',
+                funFact: 'Hypatia invented several practical scientific instruments, including the astrolabe and the hydrometer.'
+            },
+            {
+                id: 'his-014', name: 'Ibn Battuta', category: 'History', difficulty: 'hard',
+                acceptedAnswers: ['Ibn Battuta'],
+                clues: [
+                    'I was a medieval Moroccan Berber Muslim scholar and explorer who traveled extensively across the Afro-Eurasian world.',
+                    'Over a period of nearly 30 years, I journeyed some 120,000 kilometers across North Africa, the Middle East, East Africa, India, China, and Southeast Asia.',
+                    'I dictated an account of my monumental travels titled Rihla (The Journey).',
+                    'I traveled much farther than Marco Polo during the medieval era.'
+                ],
+                bio: 'Ibn Battuta documented the medieval Islamic world and beyond with astonishing curiosity and breadth.',
+                funFact: 'During his travels, Ibn Battuta served variously as a judge (qadi), ambassador, merchant, and pilgrim.'
+            },
+            {
+                id: 'art-012', name: 'Johann Wolfgang von Goethe', category: 'Arts', difficulty: 'hard',
+                acceptedAnswers: ['Goethe', 'Johann Wolfgang von Goethe'],
+                clues: [
+                    'I was a German poet, novelist, playwright, scientist, and statesman of the Weimar Classicism era.',
+                    'My famous works include the tragic play Faust, The Sorrows of Young Werther, and Theory of Colours.',
+                    'I am considered the preeminent writer of German literature and a key figure in Romanticism.',
+                    'Napoleon Bonaparte famously requested a meeting with me after reading my novels.'
+                ],
+                bio: 'Goethe explored the depths of human striving, emotion, and scientific morphology.',
+                funFact: 'Goethe was a passionate botanist and actually coined the term "morphology" in biology.'
+            },
+            {
+                id: 'sci-016', name: 'Antonie van Leeuwenhoek', category: 'Science', difficulty: 'hard',
+                acceptedAnswers: ['Antonie van Leeuwenhoek', 'Leeuwenhoek'],
+                clues: [
+                    'I was a Dutch businessman and scientist in the Golden Age of Dutch science and technology.',
+                    'I am commonly known as "the Father of Microbiology" for my pioneering work in microscopy.',
+                    'I was the first person to observe and describe single-celled organisms, which I called "animalcules" (bacteria and protozoa).',
+                    'I built my own high-magnification microscopes featuring precision single-lens optics.'
+                ],
+                bio: 'Leeuwenhoek opened humanity’s eyes to the invisible microscopic universe thriving all around us.',
+                funFact: 'Leeuwenhoek guarded his microscope lens-making techniques so jealously that contemporaries could not replicate his powerful instruments for decades.'
+            },
+            {
+                id: 'his-015', name: 'Cyrus the Great', category: 'History', difficulty: 'hard',
+                acceptedAnswers: ['Cyrus the Great', 'Cyrus II', 'Cyrus'],
+                clues: [
+                    'I was the founder of the Achaemenid Empire (the First Persian Empire).',
+                    'I created an empire spanning across Western and Central Asia through unprecedented military conquests.',
+                    'I issued the Cyrus Cylinder, often hailed as the world’s oldest declaration of human rights.',
+                    'I permitted the Jewish exiles in Babylon to return to Jerusalem and rebuild their temple.'
+                ],
+                bio: 'Cyrus the Great combined military brilliance with remarkable religious and cultural tolerance.',
+                funFact: 'According to the ancient historian Xenophon, Cyrus was raised to value physical endurance, truthfulness, and justice above all else.'
+            },
+            {
+                id: 'art-013', name: 'Tariq ibn Ziyad', category: 'Arts', difficulty: 'hard',
+                acceptedAnswers: ['Tariq ibn Ziyad', 'Tariq'],
+                clues: [
+                    'I was an Umayyad commander who led the Muslim conquest of Visigothic Hispania in 711 AD.',
+                    'My name is immortalized in the geographical landmark Gibraltar (derived from Jabal Tariq, meaning "Mountain of Tariq").',
+                    'I famously ordered my ships burned upon landing in Iberia to inspire my soldiers to conquer or perish.',
+                    'My campaign established Islamic civilization in Andalusia for centuries.'
+                ],
+                bio: 'Tariq ibn Ziyad orchestrated one of the most consequential military expeditions in European medieval history.',
+                funFact: 'His dramatic pre-battle speech urging his soldiers forward became a legendary piece of medieval oratory.'
+            },
+            {
+                id: 'sci-017', name: 'Erwin Schrödinger', category: 'Science', difficulty: 'hard',
+                acceptedAnswers: ['Erwin Schrodinger', 'Erwin Schrödinger', 'Schrodinger'],
+                clues: [
+                    'I was an Austrian-Irish physicist who developed fundamental results in quantum theory.',
+                    'I formulated the wave equation that bears my name (Schrödinger equation), foundational to quantum mechanics.',
+                    'I proposed the famous thought experiment known as "Schrödinger\'s cat" to illustrate paradoxes in quantum superposition.',
+                    'I was awarded the Nobel Prize in Physics in 1933.'
+                ],
+                bio: 'Schrödinger’s wave mechanics revealed the probabilistic nature of subatomic particles.',
+                funFact: 'Aside from quantum physics, Schrödinger wrote extensively on philosophy, ancient Greek color theory, and theoretical biology.'
+            },
+            {
+                id: 'his-016', name: 'Hatshepsut', category: 'History', difficulty: 'hard',
+                acceptedAnswers: ['Hatshepsut'],
+                clues: [
+                    'I was the fifth pharaoh of the Eighteenth Dynasty of Egypt, reigning as one of history\'s most successful female monarchs.',
+                    'I initially ruled as regent for my stepson before assuming full pharaonic power and wearing the traditional royal regalia and false beard.',
+                    'I established vast trading networks, notably the maritime expedition to the Land of Punt.',
+                    'I commissioned the magnificent mortuary temple at Deir el-Bahari.'
+                ],
+                bio: 'Hatshepsut presided over a prosperous era of monumental architecture and economic expansion in ancient Egypt.',
+                funFact: 'Following her reign, subsequent rulers attempted to chisel away her images and cartouches to erase her from history, yet her monuments survived.'
+            },
+            {
+                id: 'art-014', name: 'Murasaki Shikibu', category: 'Arts', difficulty: 'hard',
+                acceptedAnswers: ['Murasaki Shikibu', 'Lady Murasaki'],
+                clues: [
+                    'I was an eleventh-century Japanese novelist, poet, and maid of honour at the imperial court during the Heian period.',
+                    'I authored The Tale of Genji, widely considered the world\'s first psychological novel.',
+                    'My diary provides invaluable historical insight into elite aristocratic life in Heian-era Kyoto.',
+                    'My pseudonym "Murasaki" honors a character in my masterpiece.'
+                ],
+                bio: 'Murasaki Shikibu pioneered novelistic literature through exquisite prose and emotional depth.',
+                funFact: 'Heian court women were traditionally discouraged from studying Chinese classics, but Murasaki secretly mastered Chinese by listening to her brother\'s lessons.'
+            },
+            {
+                id: 'sci-018', name: 'Subrahmanyan Chandrasekhar', category: 'Science', difficulty: 'hard',
+                acceptedAnswers: ['Subrahmanyan Chandrasekhar', 'Chandrasekhar'],
+                clues: [
+                    'I was an Indian-American astrophysicist who spent his professional career at the University of Chicago.',
+                    'I calculated the maximum mass of a stable white dwarf star (the Chandrasekhar limit), crucial to understanding stellar evolution and black holes.',
+                    'I was awarded the Nobel Prize in Physics in 1983.',
+                    'My nephew was the Nobel laureate Subramanyan Chandrasekhar\'s peer, physicist Subrahmanyan Chandrasekhar.'
+                ],
+                bio: 'Chandrasekhar unlocked the physics of collapsing stars and stellar mass limits.',
+                funFact: 'When Chandrasekhar first presented his stellar mass limit theory in 1935 as a young man, prominent British astronomers publicly ridiculed him.'
+            },
+            {
+                id: 'his-017', name: 'Zheng He', category: 'History', difficulty: 'hard',
+                acceptedAnswers: ['Zheng He', 'Cheng Ho'],
+                clues: [
+                    'I was a Hui Chinese mariner, explorer, diplomat, and fleet admiral during China\'s early Ming dynasty.',
+                    'I commanded seven monumental treasure fleet expeditions across the Indian Ocean, reaching Southeast Asia, India, the Persian Gulf, and East Africa.',
+                    'My massive wooden treasure ships dwarfed European vessels of the era.',
+                    'My voyages projected imperial Chinese prestige and commerce across the maritime Silk Road.'
+                ],
+                bio: 'Zheng He commanded the greatest armada of the medieval world, forging diplomatic ties across two oceans.',
+                funFact: 'Zheng He’s flagship treasure ships were estimated to be over 400 feet long—four times the length of Christopher Columbus’s Santa María.'
+            },
+            {
+                id: 'art-015', name: 'Ovid', category: 'Arts', difficulty: 'hard',
+                acceptedAnswers: ['Ovid', 'Publius Ovidius Naso'],
+                clues: [
+                    'I was a Roman poet best known for my mythological narrative poem Metamorphoses.',
+                    'My poetry was celebrated across the Roman Empire for its elegance, wit, and psychological penetration.',
+                    'I was unexpectedly banished by Emperor Augustus to a remote fishing village on the Black Sea in 8 AD.',
+                    'My works profoundly influenced Renaissance literature and Western mythology.'
+                ],
+                bio: 'Ovid’s Metamorphoses became the definitive handbook of Greco-Roman mythology for poets and artists for centuries.',
+                funFact: 'To this day, the exact reason for Ovid’s sudden imperial banishment by Augustus remains one of literary history\'s greatest unsolved mysteries.'
+            },
+            {
+                id: 'sci-019', name: 'Emmy Noether', category: 'Science', difficulty: 'hard',
+                acceptedAnswers: ['Emmy Noether', 'Noether'],
+                clues: [
+                    'I was a German mathematician recognized by Albert Einstein and Pavel Alexandrov as the most important female mathematician in history.',
+                    'I proved Noether\'s theorem, which connects symmetry in physics to conservation laws.',
+                    'I revolutionized abstract algebra, ring theory, and field theory.',
+                    'I faced severe gender discrimination in academia, lecturing unpaid under David Hilbert\'s name at Göttingen.'
+                ],
+                bio: 'Emmy Noether transformed theoretical physics and abstract algebra with profound foundational theorems.',
+                funFact: 'Einstein wrote a glowing obituary for Emmy Noether in The New York Times following her passing in 1935.'
+            },
+            {
+                id: 'his-018', name: 'Ashoka the Great', category: 'History', difficulty: 'hard',
+                acceptedAnswers: ['Ashoka', 'Ashoka the Great', 'Asoka'],
+                clues: [
+                    'I was an Indian emperor of the Maurya Dynasty who ruled almost the entire Indian subcontinent in the 3rd century BCE.',
+                    'Following the devastating Kalinga War, I renounced violence and embraced Buddhism.',
+                    'I propagated moral governance, animal welfare, and religious tolerance through my Edicts carved on pillars and rocks across Asia.',
+                    'The Lion Capital of my pillar at Sarnath is the national emblem of India today.'
+                ],
+                bio: 'Ashoka transformed from a ruthless conqueror into a model philosopher-king dedicated to peace and dharma.',
+                funFact: 'Ashoka established hospitals for both humans and animals across his empire, predating modern veterinary medicine by millennia.'
+            },
+            {
+                id: 'art-016', name: 'Guillermo del Toro', category: 'Arts', difficulty: 'hard',
+                acceptedAnswers: ['Guillermo del Toro', 'Del Toro'],
+                clues: [
+                    'I am a Mexican filmmaker, director, screenwriter, and producer known for my dark fantasy and monster films.',
+                    'I directed Pan\'s Labyrinth, The Shape of Water, and Pinocchio.',
+                    'My films blend fairy tale folklore, practical creature effects, and deep emotional empathy for marginalized outsiders.',
+                    'I won Academy Awards for Best Director and Best Picture.'
+                ],
+                bio: 'Guillermo del Toro is a master cinematic visionary who champions monsters and gothic fairy tales.',
+                funFact: 'Del Toro keeps a massive private home museum in Los Angeles known as "Bleak House" filled with horror movie memorabilia, props, and gothic art.'
+            },
+            {
+                id: 'sci-020', name: 'Lise Meitner', category: 'Science', difficulty: 'hard',
+                acceptedAnswers: ['Lise Meitner', 'Meitner'],
+                clues: [
+                    'I was an Austrian-Swedish physicist who worked on radioactivity and nuclear physics.',
+                    'I led the small physics team that first discovered nuclear fission of uranium.',
+                    'Despite my crucial theoretical explanation of nuclear fission, my colleague Otto Hahn was awarded the Nobel Prize without me.',
+                    'Element 105, meitnerium, is named directly in my honor.'
+                ],
+                bio: 'Lise Meitner unlocked the immense power of nuclear fission despite enduring intense persecution and gender bias.',
+                funFact: 'Albert Einstein famously referred to Lise Meitner as "our Marie Curie."'
+            },
+            {
+                id: 'his-019', name: 'Boudica', category: 'History', difficulty: 'hard',
+                acceptedAnswers: ['Boudica', 'Boadicea'],
+                clues: [
+                    'I was a queen of the British Celtic Iceni tribe who led an uprising against the occupying forces of the Roman Empire in 60–61 AD.',
+                    'My armies successfully sacked and burned Londinium (London) and Camulodunum.',
+                    'I became a legendary symbol of British resistance and freedom against imperial tyranny.',
+                    'My statue stands proudly near Westminster Bridge in London.'
+                ],
+                bio: 'Boudica galvanized Celtic tribes in a fierce uprising that shook the Roman occupation of Britain to its foundations.',
+                funFact: 'Historian Tacitus recorded that Boudica delivered a stirring battle speech to her 100,000-strong army before the decisive final conflict.'
+            }
+        ];
+
+        // Translations Dictionary (EN / ID)
+        const translations = {
+            en: {
+                navJournal: "Journal",
+                welcomeTitle: "Famous People — Guess Who?",
+                welcomeTagline: "Read progressive clues, think smart, and identify historical, scientific, and cultural icons!",
+                txtFormTitle: "Student / Player Identity",
+                lblName: "Full Name *",
+                lblClass: "Class / Grade *",
+                lblAbsent: "Attendance No. *",
+                lblSchool: "School / Madrasah *",
+                lblDiff: "Difficulty Level",
+                lblMode: "Game Mode",
+                lblCat: "Category",
+                btnStart: "Start Challenge",
+                btnHow: "How to Play",
+                gameHeader: "Who Am I?",
+                btnReveal: "Reveal Next Clue",
+                btnSubmit: "Submit",
+                btnSkip: "Skip Question",
+                scoreWeight: "Score value decreases with each clue revealed.",
+                sumCorrect: "Correct!",
+                sumIncorrect: "Not Quite!",
+                lblClues: "Clues Used",
+                lblScore: "Points Earned",
+                lblTotal: "Total Score",
+                bioHeading: "Biographical Bio",
+                lblFunFact: "Fun Fact:",
+                btnNextQ: "Next Question",
+                btnHome: "Home",
+                journalHeading: "Famous Figures Learning Journal",
+                journalSub: "Review icons and historical figures you have successfully identified",
+                certHeading: "Certificate of Achievement",
+                certSub: "Awarded for excellence in history and general knowledge",
+                certTo: "This certificate is proudly presented to",
+                certBody: "For successfully identifying world-changing figures, demonstrating exceptional logical reasoning, and mastering global history and science trivia.",
+                downloadCert: "Download Certificate Image",
+                settingsHeading: "Game Settings",
+                setTheme: "Dark Theme",
+                setLang: "Language",
+                resetData: "Reset Local Progress",
+                howtoHeading: "How to Play Guess Who",
+                howtoP1: "1. Read the first clue carefully. Each round features a secret famous personality across science, history, arts, or sports.",
+                howtoP2: "2. You can guess immediately for maximum points (50 pts), or click <strong>Reveal Next Clue</strong> for an easier hint (worth fewer points).",
+                howtoP3: "3. Answer correctly via typing or multiple choice, review interesting facts, and build your learning journal!"
+            },
+            id: {
+                navJournal: "Jurnal",
+                welcomeTitle: "Famous People — Tebak Siapa Saya?",
+                welcomeTagline: "Baca petunjuk bertahap, berpikir cerdas, dan kenali tokoh penting dunia, sains, sejarah, dan seni!",
+                txtFormTitle: "Identitas Siswa / Pemain",
+                lblName: "Nama Lengkap *",
+                lblClass: "Kelas *",
+                lblAbsent: "Nomor Presensi *",
+                lblSchool: "Asal Sekolah / Madrasah *",
+                lblDiff: "Tingkat Kesulitan",
+                lblMode: "Mode Permainan",
+                lblCat: "Kategori",
+                btnStart: "Mulai Tantangan",
+                btnHow: "Cara Bermain",
+                gameHeader: "Siapakah Saya?",
+                btnReveal: "Buka Petunjuk Berikutnya",
+                btnSubmit: "Kirim",
+                btnSkip: "Lewati Pertanyaan",
+                scoreWeight: "Nilai poin berkurang setiap petunjuk dibuka.",
+                sumCorrect: "Benar!",
+                sumIncorrect: "Kurang Tepat!",
+                lblClues: "Petunjuk Terpakai",
+                lblScore: "Poin Diperoleh",
+                lblTotal: "Total Skor",
+                bioHeading: "Biografi Tokoh",
+                lblFunFact: "Fakta Unik:",
+                btnNextQ: "Pertanyaan Berikutnya",
+                btnHome: "Beranda",
+                journalHeading: "Jurnal Tokoh Terkenal",
+                journalSub: "Tinjau tokoh dan ikon sejarah yang telah Anda kenali",
+                certHeading: "Sertifikat Penghargaan",
+                certSub: "Diberikan atas prestasi dalam pengetahuan umum dan sejarah",
+                certTo: "Sertifikat ini dengan bangga diberikan kepada",
+                certBody: "Atas keberhasilan mengidentifikasi tokoh-tokoh dunia, menunjukkan penalaran logis yang luar biasa, serta menguasai wawasan sejarah dan sains.",
+                downloadCert: "Unduh Gambar Sertifikat",
+                settingsHeading: "Pengaturan Permainan",
+                setTheme: "Tema Gelap",
+                setLang: "Bahasa",
+                resetData: "Reset Progres Lokal",
+                howtoHeading: "Cara Bermain Tebak Tokoh",
+                howtoP1: "1. Baca petunjuk pertama dengan teliti. Setiap ronde menampilkan tokoh rahasia dari bidang sains, sejarah, seni, atau olahraga.",
+                howtoP2: "2. Anda dapat langsung menebak untuk poin maksimal (50 poin), atau klik <strong>Buka Petunjuk</strong> untuk bantuan tambahan.",
+                howtoP3: "3. Jawab dengan benar, pelajari fakta uniknya, dan kumpulkan jurnal pembelajaran Anda!"
+            }
+        };
+
+        function updateUIStrings() {
+            const t = translations[currentLang];
+            document.getElementById('nav-journal').innerText = t.navJournal;
+            document.getElementById('welcome-title').innerText = t.welcomeTitle;
+            document.getElementById('welcome-tagline').innerText = t.welcomeTagline;
+            document.getElementById('txt-form-title').innerText = t.txtFormTitle;
+            document.getElementById('lbl-name').innerText = t.lblName;
+            document.getElementById('lbl-class').innerText = t.lblClass;
+            document.getElementById('lbl-absent').innerText = t.lblAbsent;
+            document.getElementById('lbl-school').innerText = t.lblSchool;
+            document.getElementById('lbl-difficulty').innerText = t.lblDiff;
+            document.getElementById('lbl-game-mode').innerText = t.lblMode;
+            document.getElementById('lbl-category').innerText = t.lblCat;
+            document.getElementById('btn-start-game').innerText = t.btnStart;
+            document.getElementById('btn-how-to-play').innerText = t.btnHow;
+            document.getElementById('txt-game-header').innerText = t.gameHeader;
+            document.getElementById('txt-reveal-clue').innerText = t.btnReveal;
+            document.getElementById('btn-submit').innerText = t.btnSubmit;
+            document.getElementById('btn-skip').innerText = t.btnSkip;
+            document.getElementById('txt-score-weight').innerText = t.scoreWeight;
+            document.getElementById('lbl-sum-clues').innerText = t.lblClues;
+            document.getElementById('lbl-sum-score').innerText = t.lblScore;
+            document.getElementById('lbl-sum-total').innerText = t.lblTotal;
+            document.getElementById('txt-bio-heading').innerText = t.bioHeading;
+            document.getElementById('lbl-fun-fact').innerText = t.lblFunFact;
+            document.getElementById('btn-next-question').innerText = t.btnNextQ;
+            document.getElementById('btn-home').innerText = t.btnHome;
+            document.getElementById('journal-heading').innerText = t.journalHeading;
+            document.getElementById('journal-subheading').innerText = t.journalSub;
+            document.getElementById('cert-heading').innerText = t.certHeading;
+            document.getElementById('cert-subheading').innerText = t.certSub;
+            document.getElementById('txt-cert-to').innerText = t.certTo;
+            document.getElementById('txt-cert-body').innerText = t.certBody;
+            document.getElementById('btn-download-cert').innerText = t.downloadCert;
+            document.getElementById('settings-heading').innerText = t.settingsHeading;
+            document.getElementById('set-lbl-theme').innerText = t.setTheme;
+            document.getElementById('set-lbl-lang').innerText = t.setLang;
+            document.getElementById('btn-reset-data').innerText = t.resetData;
+            document.getElementById('howto-heading').innerText = t.howtoHeading;
+            document.getElementById('howto-p1').innerHTML = t.howtoP1;
+            document.getElementById('howto-p2').innerHTML = t.howtoP2;
+            document.getElementById('howto-p3').innerHTML = t.howtoP3;
+            document.getElementById('lang-label').innerText = currentLang === 'en' ? 'EN / ID' : 'ID / EN';
+        }
+
+        window.toggleLanguage = function() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            updateUIStrings();
+            localStorage.setItem('famousLang', currentLang);
+        };
+
+        window.toggleTheme = function() {
+            isDarkMode = !isDarkMode;
+            const htmlEl = document.documentElement;
+            const iconEl = document.getElementById('theme-icon');
+            if (isDarkMode) {
+                htmlEl.classList.add('dark');
+                if (iconEl) iconEl.className = 'fa-solid fa-sun';
+            } else {
+                htmlEl.classList.remove('dark');
+                if (iconEl) iconEl.className = 'fa-solid fa-moon';
+            }
+            localStorage.setItem('famousTheme', isDarkMode ? 'dark' : 'light');
+        };
+
+        window.switchScreen = function(screenName) {
+            currentScreen = screenName;
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('flex');
+
+            if (screenName === 'welcome') {
+                document.getElementById('screen-welcome').classList.remove('hidden');
+                clearInterval(timerInterval);
+            } else if (screenName === 'game') {
+                document.getElementById('screen-game').classList.remove('hidden');
+                document.getElementById('screen-game').classList.add('flex');
+            }
+        };
+
+        window.startGame = function() {
+            const name = document.getElementById('input-name').value.trim();
+            const cls = document.getElementById('input-class').value.trim();
+            const absent = document.getElementById('input-absent').value.trim();
+            const school = document.getElementById('input-school').value.trim();
+
+            if (!name || !cls || !absent || !school) {
+                showToast(currentLang === 'id' ? 'Harap lengkapi semua data identitas siswa!' : 'Please complete all student identity fields!', 'error');
+                return;
+            }
+
+            player = { name, studentClass: cls, absentNo: absent, school };
+            localStorage.setItem('famousPlayer', JSON.stringify(player));
+
+            score = 0;
+            currentQuestionIndex = 0;
+
+            // Filter questions by difficulty and category
+            const diff = document.getElementById('select-difficulty').value;
+            const cat = document.getElementById('select-category').value;
+
+            activeQuestions = questionsData.filter(q => {
+                const matchDiff = q.difficulty === diff;
+                const matchCat = cat === 'all' || q.category === cat;
+                return matchDiff && matchCat;
+            });
+
+            // Fallback if filter returns too few
+            if (activeQuestions.length === 0) {
+                activeQuestions = [...questionsData];
+            }
+
+            // Shuffle questions
+            activeQuestions.sort(() => Math.random() - 0.5);
+
+            loadQuestion();
+            window.switchScreen('game');
+        };
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= activeQuestions.length) {
+                openCertificate();
+                return;
+            }
+
+            currentQuestion = activeQuestions[currentQuestionIndex];
+            cluesRevealedCount = 1;
+
+            // Update HUD
+            document.getElementById('round-number-badge').innerText = `Q${currentQuestionIndex + 1}`;
+            document.getElementById('hud-player-name').innerText = player.name;
+            document.getElementById('hud-score').innerText = score;
+            document.getElementById('hud-category-badge').innerText = currentQuestion.category;
+
+            renderClues();
+
+            const mode = document.getElementById('select-mode').value;
+            const classicArea = document.getElementById('classic-input-area');
+            const multipleArea = document.getElementById('multiple-options-area');
+            const revealBtnWrapper = document.getElementById('reveal-btn-wrapper');
+
+            if (mode === 'multiple') {
+                classicArea.classList.add('hidden');
+                multipleArea.classList.remove('hidden');
+                renderMultipleChoices();
+            } else {
+                classicArea.classList.remove('hidden');
+                multipleArea.classList.add('hidden');
+                document.getElementById('answer-input').value = '';
+                document.getElementById('answer-input').focus();
+            }
+
+            if (mode === 'timed') {
+                document.getElementById('timer-wrapper').classList.remove('hidden');
+                if (currentQuestionIndex === 0) startTimer();
+            } else {
+                document.getElementById('timer-wrapper').classList.add('hidden');
+            }
+        }
+
+        function renderClues() {
+            const container = document.getElementById('clues-container');
+            container.innerHTML = '';
+
+            for (let i = 0; i < cluesRevealedCount; i++) {
+                if (i < currentQuestion.clues.length) {
+                    container.innerHTML += `
+                        <div class="p-3.5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs md:text-sm font-medium text-slate-700 dark:text-slate-200 animate-pop flex items-start space-x-2.5">
+                            <span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">${i + 1}</span>
+                            <span>${currentQuestion.clues[i]}</span>
+                        </div>
+                    `;
+                }
+            }
+
+            const counterBadge = document.getElementById('clue-counter-badge');
+            counterBadge.innerText = `${cluesRevealedCount} / ${currentQuestion.clues.length}`;
+
+            const revealBtn = document.getElementById('btn-reveal');
+            if (cluesRevealedCount >= currentQuestion.clues.length) {
+                revealBtn.disabled = true;
+                revealBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                revealBtn.disabled = false;
+                revealBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        window.revealNextClue = function() {
+            if (cluesRevealedCount < currentQuestion.clues.length) {
+                cluesRevealedCount++;
+                renderClues();
+            }
+        };
+
+        function renderMultipleChoices() {
+            const area = document.getElementById('multiple-options-area');
+            area.innerHTML = '';
+
+            // Get 3 incorrect choices from pool + correct answer
+            let choices = [currentQuestion.name];
+            const otherPool = questionsData.filter(q => q.name !== currentQuestion.name);
+            otherPool.sort(() => Math.random() - 0.5);
+
+            for (let i = 0; i < 3 && i < otherPool.length; i++) {
+                choices.push(otherPool[i].name);
+            }
+            choices.sort(() => Math.random() - 0.5);
+
+            choices.forEach(choice => {
+                area.innerHTML += `
+                    <button onclick="window.submitMultipleChoice('${choice.replace(/'/g, "\\'")}')" class="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-semibold text-slate-700 dark:text-slate-200 transition text-left flex items-center space-x-2">
+                        <i class="fa-solid fa-circle-dot text-[10px] text-indigo-500"></i>
+                        <span>${choice}</span>
+                    </button>
+                `;
+            });
+        }
+
+        window.submitClassicAnswer = function() {
+            const inputEl = document.getElementById('answer-input');
+            const val = inputEl.value.trim();
+            inputEl.value = '';
+            if (!val) return;
+
+            // Normalize and check against accepted answers
+            const isMatch = currentQuestion.acceptedAnswers.some(ans => 
+                ans.toLowerCase() === val.toLowerCase()
+            );
+
+            handleAnswerResult(isMatch);
+        };
+
+        window.submitMultipleChoice = function(selectedChoice) {
+            const isMatch = selectedChoice.toLowerCase() === currentQuestion.name.toLowerCase();
+            handleAnswerResult(isMatch);
+        };
+
+        function handleAnswerResult(isCorrect) {
+            let pointsEarned = 0;
+            if (isCorrect) {
+                // Points scale by clues used: Clue 1 = 50, Clue 2 = 40, Clue 3 = 30, Clue 4 = 20
+                pointsEarned = Math.max(10, 60 - (cluesRevealedCount * 10));
+                score += pointsEarned;
+            }
+
+            // Add to learning journal if correct
+            if (isCorrect) {
+                learningJournal.push({ name: currentQuestion.name, category: currentQuestion.category, bio: currentQuestion.bio, fact: currentQuestion.funFact });
+                localStorage.setItem('famousJournal', JSON.stringify(learningJournal));
+            }
+
+            // Open Summary Modal
+            showSummaryModal(isCorrect, pointsEarned);
+        }
+
+        function showSummaryModal(isCorrect, pointsEarned) {
+            const iconBox = document.getElementById('summary-icon-box');
+            const titleEl = document.getElementById('summary-title');
+
+            if (isCorrect) {
+                iconBox.className = 'w-16 h-16 bg-gradient-to-tr from-emerald-500 to-cyan-400 rounded-2xl shadow-lg flex items-center justify-center text-white text-2xl mx-auto';
+                titleEl.innerText = translations[currentLang].sumCorrect;
+                titleEl.className = 'font-fun text-2xl font-bold text-emerald-600 dark:text-emerald-400';
+            } else {
+                iconBox.className = 'w-16 h-16 bg-gradient-to-tr from-rose-500 to-amber-500 rounded-2xl shadow-lg flex items-center justify-center text-white text-2xl mx-auto';
+                titleEl.innerText = translations[currentLang].sumIncorrect;
+                titleEl.className = 'font-fun text-2xl font-bold text-rose-600 dark:text-rose-400';
+            }
+
+            document.getElementById('summary-person-name').innerText = currentQuestion.name;
+            document.getElementById('sum-clues-val').innerText = `${cluesRevealedCount} / ${currentQuestion.clues.length}`;
+            document.getElementById('sum-score-val').innerText = `+${pointsEarned}`;
+            document.getElementById('sum-total-val').innerText = score;
+            document.getElementById('summary-bio-text').innerText = currentQuestion.bio;
+            document.getElementById('summary-fact-text').innerText = currentQuestion.funFact;
+
+            const modal = document.getElementById('modal-summary');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        window.nextQuestion = function() {
+            document.getElementById('modal-summary').classList.remove('flex');
+            document.getElementById('modal-summary').classList.add('hidden');
+            currentQuestionIndex++;
+            loadQuestion();
+        };
+
+        window.skipQuestion = function() {
+            handleAnswerResult(false);
+        };
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 90;
+            document.getElementById('hud-timer').innerText = `${timeLeft}s`;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('hud-timer').innerText = `${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    openCertificate();
+                }
+            }, 1000);
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('feedback-toast');
+            toast.className = 'mt-2 w-full p-3 rounded-2xl text-xs font-medium transition-all block animate-pop ';
+            if (type === 'success') toast.className += 'bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300';
+            else if (type === 'error') toast.className += 'bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300';
+            else toast.className += 'bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300';
+
+            toast.innerHTML = msg;
+            setTimeout(() => { toast.classList.add('hidden'); }, 3500);
+        }
+
+        // Journal Modal
+        window.openJournal = function() {
+            const container = document.getElementById('journal-entries-container');
+            container.innerHTML = '';
+            if (learningJournal.length === 0) {
+                container.innerHTML = `<div class="text-center text-xs text-slate-400 py-6">No figures recorded in journal yet. Play rounds to unlock famous icons!</div>`;
+            } else {
+                learningJournal.forEach(entry => {
+                    container.innerHTML += `
+                        <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1">
+                            <div class="flex justify-between items-center">
+                                <span class="font-fun font-bold text-sm text-indigo-600 dark:text-indigo-400">${entry.name}</span>
+                                <span class="text-[10px] bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full font-semibold">${entry.category}</span>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300">${entry.bio}</p>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('modal-journal').classList.remove('hidden');
+            document.getElementById('modal-journal').classList.add('flex');
+        };
+        window.closeJournal = function() {
+            document.getElementById('modal-journal').classList.remove('flex');
+            document.getElementById('modal-journal').classList.add('hidden');
+        };
+
+        // Certificate Modal
+        function openCertificate() {
+            clearInterval(timerInterval);
+            document.getElementById('cert-winner-name').innerText = player.name || 'Budi Santoso';
+            document.getElementById('cert-winner-class').innerText = player.studentClass || 'VIII-A';
+            document.getElementById('cert-winner-absent').innerText = player.absentNo || '05';
+            document.getElementById('cert-winner-school').innerText = player.school || 'MTsN 1 Malang';
+            document.getElementById('cert-score').innerText = `${score} Points`;
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('cert-date').innerText = new Date().toLocaleDateString('en-US', options);
+
+            const certModal = document.getElementById('modal-certificate');
+            certModal.classList.remove('hidden');
+            certModal.classList.add('flex');
+        }
+        window.closeCertificate = function() {
+            document.getElementById('modal-certificate').classList.remove('flex');
+            document.getElementById('modal-certificate').classList.add('hidden');
+            window.switchScreen('welcome');
+        };
+
+        window.downloadCertificate = function() {
+            const canvasImg = document.createElement('canvas');
+            canvasImg.width = 1200;
+            canvasImg.height = 850;
+            const cCtx = canvasImg.getContext('2d');
+
+            cCtx.fillStyle = '#ffffff';
+            cCtx.fillRect(0, 0, canvasImg.width, canvasImg.height);
+
+            cCtx.strokeStyle = '#f59e0b';
+            cCtx.lineWidth = 24;
+            cCtx.strokeRect(20, 20, canvasImg.width - 40, canvasImg.height - 40);
+
+            cCtx.strokeStyle = '#e2e8f0';
+            cCtx.lineWidth = 4;
+            cCtx.strokeRect(40, 40, canvasImg.width - 80, canvasImg.height - 80);
+
+            cCtx.fillStyle = '#4f46e5';
+            cCtx.font = 'bold 36px "Fredoka", sans-serif';
+            cCtx.textAlign = 'center';
+            cCtx.fillText('FAMOUS PEOPLE ACADEMY', canvasImg.width / 2, 110);
+
+            cCtx.fillStyle = '#64748b';
+            cCtx.font = '20px "Inter", sans-serif';
+            cCtx.fillText('OFFICIAL CERTIFICATE OF ACHIEVEMENT', canvasImg.width / 2, 145);
+
+            cCtx.fillStyle = '#94a3b8';
+            cCtx.font = 'italic 20px "Inter", sans-serif';
+            cCtx.fillText('This certificate is proudly presented to', canvasImg.width / 2, 220);
+
+            cCtx.fillStyle = '#4338ca';
+            cCtx.font = 'bold 52px "Fredoka", sans-serif';
+            cCtx.fillText(player.name || 'Budi Santoso', canvasImg.width / 2, 290);
+
+            cCtx.fillStyle = '#475569';
+            cCtx.font = 'bold 18px "Inter", sans-serif';
+            cCtx.fillText(`Class: ${player.studentClass || 'VIII-A'}   |   Absence No: ${player.absentNo || '05'}   |   School: ${player.school || 'MTsN 1 Malang'}`, canvasImg.width / 2, 335);
+
+            cCtx.fillStyle = '#334155';
+            cCtx.font = '20px "Inter", sans-serif';
+            wrapText(cCtx, "For successfully identifying world-changing figures, demonstrating exceptional logical reasoning, and mastering global history and science trivia.", canvasImg.width / 2, 400, 800, 32);
+
+            cCtx.lineWidth = 2;
+            cCtx.strokeStyle = '#cbd5e1';
+            cCtx.beginPath();
+            cCtx.moveTo(100, 700);
+            cCtx.lineTo(400, 700);
+            cCtx.moveTo(800, 700);
+            cCtx.lineTo(1100, 700);
+            cCtx.stroke();
+
+            cCtx.fillStyle = '#64748b';
+            cCtx.font = '14px "Inter", sans-serif';
+            cCtx.fillText('Date', 250, 730);
+            cCtx.fillStyle = '#1e293b';
+            cCtx.font = 'bold 18px "Inter", sans-serif';
+            cCtx.fillText(new Date().toLocaleDateString(), 250, 760);
+
+            cCtx.fillStyle = '#4f46e5';
+            cCtx.font = 'bold 22px "Fredoka", sans-serif';
+            cCtx.fillText('Ahmad Budi Leksono', canvasImg.width / 2, 730);
+            cCtx.fillStyle = '#64748b';
+            cCtx.font = '14px "Inter", sans-serif';
+            cCtx.fillText('Application Creator & Educator', canvasImg.width / 2, 755);
+
+            cCtx.fillStyle = '#64748b';
+            cCtx.font = '14px "Inter", sans-serif';
+            cCtx.fillText('Total Score', 950, 730);
+            cCtx.fillStyle = '#4f46e5';
+            cCtx.font = 'bold 20px "Fredoka", sans-serif';
+            cCtx.fillText(`${score} Points`, 950, 760);
+
+            let link = document.createElement('a');
+            link.download = `Famous_People_Certificate_${(player.name || 'Student').replace(/\s+/g, '_')}.png`;
+            link.href = canvasImg.toDataURL('image/png');
+            link.click();
+        };
+
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            let words = text.split(' ');
+            let line = '';
+            for(let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' ';
+                let metrics = context.measureText(testLine);
+                let testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    context.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            context.fillText(line, x, y);
+        }
+
+        // Settings Modal
+        window.openSettingsModal = function() {
+            document.getElementById('modal-settings').classList.remove('hidden');
+            document.getElementById('modal-settings').classList.add('flex');
+        };
+        window.closeSettingsModal = function() {
+            document.getElementById('modal-settings').classList.remove('flex');
+            document.getElementById('modal-settings').classList.add('hidden');
+        };
+
+        // How to Play Modal
+        window.openHowToPlay = function() {
+            document.getElementById('modal-howto').classList.remove('hidden');
+            document.getElementById('modal-howto').classList.add('flex');
+        };
+        window.closeHowToPlay = function() {
+            document.getElementById('modal-howto').classList.remove('flex');
+            document.getElementById('modal-howto').classList.add('hidden');
+        };
+
+        window.resetProgressData = function() {
+            localStorage.clear();
+            learningJournal = [];
+            showToast(currentLang === 'id' ? 'Progres lokal berhasil direset.' : 'Local progress successfully reset.', 'info');
+            closeSettingsModal();
+        };
+
+        window.quitToMenu = function() {
+            clearInterval(timerInterval);
+            window.switchScreen('welcome');
+        };
+
+        // Enter key listener for classic text input
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputEl = document.getElementById('answer-input');
+            if (inputEl) {
+                inputEl.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        window.submitClassicAnswer();
+                    }
+                });
+            }
+
+            // Load saved settings & player from localStorage if present
+            const savedLang = localStorage.getItem('famousLang');
+            if (savedLang) {
+                currentLang = savedLang;
+                updateUIStrings();
+            }
+            const savedTheme = localStorage.getItem('famousTheme');
+            if (savedTheme === 'dark') {
+                window.toggleTheme();
+            }
+            const savedPlayer = localStorage.getItem('famousPlayer');
+            if (savedPlayer) {
+                try {
+                    player = JSON.parse(savedPlayer);
+                    if (document.getElementById('input-name')) document.getElementById('input-name').value = player.name || '';
+                    if (document.getElementById('input-class')) document.getElementById('input-class').value = player.studentClass || '';
+                    if (document.getElementById('input-absent')) document.getElementById('input-absent').value = player.absentNo || '';
+                    if (document.getElementById('input-school')) document.getElementById('input-school').value = player.school || '';
+                } catch(e) {}
+            }
+            const savedJournal = localStorage.getItem('famousJournal');
+            if (savedJournal) {
+                try { learningJournal = JSON.parse(savedJournal); } catch(e) {}
+            }
+        });
+    </script>
+</body>
+</html>
